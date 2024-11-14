@@ -1,0 +1,50 @@
+// Select all draggable items and bins
+const items = document.querySelectorAll('.item');
+const bins = document.querySelectorAll('.bin');
+
+// Add event listeners to each item for dragging
+items.forEach(item => {
+    item.addEventListener('dragstart', dragStart);
+});
+
+// Add event listeners to each bin to allow dropping
+bins.forEach(bin => {
+    bin.addEventListener('dragover', dragOver);
+    bin.addEventListener('drop', dropItem);
+});
+
+// Store the ID of the item being dragged
+function dragStart(event) {
+    event.dataTransfer.setData('text', event.target.id);
+}
+
+// Allow the item to be dropped on the bin
+function dragOver(event) {
+    event.preventDefault();
+}
+
+// Handle the drop and check if it's the correct bin
+function dropItem(event) {
+    event.preventDefault();
+    const itemId = event.dataTransfer.getData('text'); // Get dragged item ID
+    const binId = event.target.id; // Get bin ID where item is dropped
+
+    // Check if the item was sorted correctly
+    checkSort(itemId, binId);
+}
+
+// Define the correct bins for each item
+function checkSort(itemId, binId) {
+    const correctSort = {
+        bottle: 'recycleBin',
+        appleCore: 'compostBin',
+        newspaper: 'recycleBin'
+    };
+
+    // Check if the item was dropped in the correct bin
+    if (correctSort[itemId] === binId) {
+        alert("Correct! The item was sorted properly.");
+    } else {
+        alert("Incorrect! Try sorting again.");
+    }
+}
